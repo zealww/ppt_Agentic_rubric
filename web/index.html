@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PPT Eval 1</title>
+  <style>
+    :root{--bg:#f4f6fb;--panel:#fff;--ink:#172033;--muted:#647089;--line:#dfe4ee;--brand:#5468ff;--brand2:#7b52db;--good:#16865c;--bad:#c84444;--warn:#b97b11}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#f4f6fb 0%,#eef1ff 100%);color:var(--ink)}
+    .shell{max-width:1240px;margin:auto;padding:30px 22px 60px}.hero{display:flex;align-items:end;justify-content:space-between;margin-bottom:22px}
+    h1{margin:0;font-size:30px;letter-spacing:-.5px}.hero p{margin:7px 0 0;color:var(--muted)}.pill{background:#e9ecff;color:#4052d9;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:700}
+    .grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(420px,.95fr);gap:20px}.card{background:rgba(255,255,255,.94);border:1px solid rgba(223,228,238,.9);border-radius:18px;box-shadow:0 12px 34px rgba(46,58,104,.08);padding:22px}
+    h2{font-size:17px;margin:0 0 17px}.tabs{display:flex;gap:8px;margin-bottom:13px}.tab{border:1px solid var(--line);background:white;padding:9px 14px;border-radius:9px;cursor:pointer;color:var(--muted)}.tab.active{background:var(--brand);border-color:var(--brand);color:white}
+    .drop{border:2px dashed #b9c1d5;border-radius:14px;padding:28px;text-align:center;transition:.2s;background:#fafbff;cursor:pointer}.drop.over{border-color:var(--brand);background:#f0f2ff}.drop strong{display:block;margin-bottom:6px}.drop small{color:var(--muted)}
+    .files{margin-top:10px;font-size:13px;color:var(--muted);max-height:90px;overflow:auto}.hidden{display:none!important}
+    label{display:block;font-size:12px;font-weight:700;color:#4c5870;margin:13px 0 6px}input,select{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 11px;background:white;color:var(--ink);outline:none}input:focus,select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(84,104,255,.12)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.checks{display:flex;flex-wrap:wrap;gap:13px;margin-top:15px}.check{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}.check input{width:auto}
+    details{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}summary{cursor:pointer;font-size:13px;font-weight:700;color:#536079}
+    button.primary{width:100%;margin-top:18px;border:0;border-radius:11px;padding:12px;background:linear-gradient(90deg,var(--brand),var(--brand2));color:white;font-weight:800;cursor:pointer;font-size:15px}button:disabled{opacity:.55;cursor:not-allowed}
+    .statusbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.status{font-size:12px;font-weight:800;padding:6px 10px;border-radius:999px;background:#eef0f5;color:#63708a}.status.running,.status.partial{background:#fff2d8;color:var(--warn)}.status.succeeded{background:#dff6eb;color:var(--good)}.status.failed,.status.cancelled{background:#ffe6e6;color:var(--bad)}
+    .actions{display:flex;gap:8px}.mini{border:1px solid var(--line);background:white;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px}.danger{color:var(--bad)}
+    pre{height:350px;margin:0;background:#121827;color:#c9d4ec;border-radius:12px;padding:14px;overflow:auto;font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}.empty{height:350px;display:grid;place-items:center;color:#8993a8;border:1px dashed var(--line);border-radius:12px;text-align:center}
+    .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.metric{background:#f6f7fb;border-radius:10px;padding:11px}.metric small{display:block;color:var(--muted);margin-bottom:4px}.metric strong{font-size:19px}.criteria{margin-top:12px}.criterion{display:flex;justify-content:space-between;border-bottom:1px solid #edf0f5;padding:8px 2px;font-size:13px}
+    .error{color:var(--bad);font-size:13px;margin-top:10px}.wide{grid-column:1/-1}.result-card{margin-top:20px}.deck-table{width:100%;border-collapse:collapse;font-size:13px}.deck-table th,.deck-table td{text-align:left;padding:9px;border-bottom:1px solid var(--line)}.deck-table th{color:var(--muted)}.deck-table tbody tr{cursor:pointer}.deck-table tbody tr:hover{background:#f7f8ff}.detail{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}.reason{background:#f7f8fc;border-radius:9px;padding:10px;margin:8px 0;font-size:13px}.reason b{display:block;margin-bottom:4px}.slide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}.slide-card{border:1px solid var(--line);border-radius:10px;padding:11px;font-size:12px}.slide-card h4{margin:0 0 8px;font-size:13px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.hero{align-items:start;gap:12px}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="hero"><div><h1>PPT Eval 1</h1><p>拖入演示文稿，或使用服务器目录，完成整套与单页 VLM 评分。</p></div><span class="pill">Rubric-driven</span></header>
+  <div class="grid">
+    <section class="card">
+      <h2>创建评估任务</h2>
+      <div class="tabs"><button class="tab active" data-mode="upload">拖拽上传</button><button class="tab" data-mode="path">目录路径</button></div>
+      <div id="uploadBox">
+        <div class="drop" id="dropZone"><strong>拖动 PPT 到这里</strong><small>支持多个 .ppt / .pptx，或点击选择</small><input id="fileInput" class="hidden" type="file" multiple accept=".ppt,.pptx"></div>
+        <div class="files" id="fileList">尚未选择文件</div>
+      </div>
+      <div id="pathBox" class="hidden"><label>服务器 PPT 目录</label><input id="sourcePath" placeholder="/mnt/.../ppt_dataset/good"></div>
+      <div class="row"><div><label>模型</label><input id="model" value="claude-sonnet-5" placeholder="支持图片输入的模型"></div><div><label>Rubric</label><select id="rubric"></select></div></div>
+      <label>输出目录（留空自动创建）</label><input id="outputPath" placeholder="./output/my_run">
+      <div class="row"><div><label>结果文件</label><input id="resultFile" value="results.json"></div><div><label>Topic 映射 JSON（可选）</label><input id="topicMap" placeholder="/mnt/.../topics.json"></div></div>
+      <div class="checks"><label class="check"><input id="resume" type="checkbox">断点续跑</label><label class="check"><input id="forceRender" type="checkbox">重新渲染</label><label class="check"><input id="forceExtract" type="checkbox">重新提取文本</label></div>
+      <details><summary>高级设置</summary>
+        <div class="row"><div><label>API Key（留空读取 .env）</label><input id="apiKey" type="password" autocomplete="off"></div><div><label>Base URL</label><input id="baseUrl"></div></div>
+        <div class="row"><div><label>内容提取并发</label><input id="workers" type="number" value="2" min="1"></div><div><label>渲染 DPI</label><input id="dpi" type="number" value="150" min="72"></div></div>
+        <div class="row"><div><label>最多网格图</label><input id="maxGrids" type="number" value="8" min="1"></div><div><label>最大输出 Tokens</label><input id="maxTokens" type="number" value="4096" min="1"></div></div>
+        <div class="row"><div><label>API 重试</label><input id="apiRetries" type="number" value="3" min="0"></div><div><label>格式重试</label><input id="formatRetries" type="number" value="2" min="0"></div></div>
+      </details>
+      <button class="primary" id="start">开始评估</button><div class="error" id="formError"></div>
+    </section>
+    <section class="card">
+      <div class="statusbar"><h2 style="margin:0">实时运行</h2><div class="actions"><span class="status" id="status">未开始</span><button class="mini danger hidden" id="cancel">停止</button><button class="mini hidden" id="download">下载 JSON</button></div></div>
+      <div class="empty" id="emptyLog">任务启动后，这里会显示实时日志和进度。</div><pre id="logs" class="hidden"></pre>
+      <div id="summary" class="hidden"><div class="summary"><div class="metric"><small>成功 PPT</small><strong id="successCount">–</strong></div><div class="metric"><small>失败</small><strong id="failedCount">–</strong></div><div class="metric"><small>平均总分</small><strong id="meanScore">–</strong></div></div><div class="criteria" id="criteria"></div></div>
+    </section>
+    <section class="card wide result-card hidden" id="resultsCard"><h2>演示文稿结果</h2><div style="overflow:auto"><table class="deck-table"><thead><tr id="resultHead"></tr></thead><tbody id="resultBody"></tbody></table></div><div id="deckDetail" class="detail hidden"></div></section>
+  </div>
+</main>
+<script>
+const $=id=>document.getElementById(id); let mode='upload', selectedFiles=[], jobId=null, poller=null, resultRows=[];
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));tab.classList.add('active');mode=tab.dataset.mode;$('uploadBox').classList.toggle('hidden',mode!=='upload');$('pathBox').classList.toggle('hidden',mode!=='path')});
+const zone=$('dropZone'), input=$('fileInput'); zone.onclick=()=>input.click(); input.onchange=()=>setFiles([...input.files]);
+['dragenter','dragover'].forEach(e=>zone.addEventListener(e,x=>{x.preventDefault();zone.classList.add('over')}));['dragleave','drop'].forEach(e=>zone.addEventListener(e,x=>{x.preventDefault();zone.classList.remove('over')}));zone.addEventListener('drop',e=>setFiles([...e.dataTransfer.files]));
+function setFiles(files){selectedFiles=files.filter(f=>/\.(ppt|pptx)$/i.test(f.name));$('fileList').textContent=selectedFiles.length?selectedFiles.map(f=>f.name).join(' · '):'没有有效的 PPT 文件'}
+async function init(){const c=await fetch('/api/config').then(r=>r.json());$('rubric').innerHTML=c.rubrics.map(r=>`<option value="${esc(r.path)}" ${r.name.includes('single_slide')?'selected':''}>${esc(r.name)}</option>`).join('');$('baseUrl').value=c.base_url||''}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function val(id){return $(id).value.trim()} function add(fd,k,id){fd.append(k,val(id))}
+$('start').onclick=async()=>{ $('formError').textContent=''; if(mode==='upload'&&!selectedFiles.length){$('formError').textContent='请选择至少一个 PPT';return} if(mode==='path'&&!val('sourcePath')){$('formError').textContent='请输入目录路径';return}
+ const fd=new FormData(); if(mode==='upload')selectedFiles.forEach(f=>fd.append('files',f));else add(fd,'source_path','sourcePath');
+ [['output_path','outputPath'],['model','model'],['rubric','rubric'],['result_file','resultFile'],['topic_map','topicMap'],['api_key','apiKey'],['base_url','baseUrl'],['workers','workers'],['dpi','dpi'],['max_grids','maxGrids'],['max_tokens','maxTokens'],['api_retries','apiRetries'],['format_retries','formatRetries']].forEach(([k,id])=>add(fd,k,id));
+ fd.append('resume',$('resume').checked);fd.append('force_render',$('forceRender').checked);fd.append('force_extract',$('forceExtract').checked);$('start').disabled=true;
+ try{const res=await fetch('/api/jobs',{method:'POST',body:fd});const data=await res.json();if(!res.ok)throw new Error(data.detail||'创建任务失败');jobId=data.id;showRun();poll()}catch(e){$('formError').textContent=e.message;$('start').disabled=false}}
+function showRun(){$('emptyLog').classList.add('hidden');$('logs').classList.remove('hidden');$('cancel').classList.remove('hidden');$('download').classList.add('hidden');$('summary').classList.add('hidden');$('resultsCard').classList.add('hidden')}
+async function poll(){clearTimeout(poller);if(!jobId)return;try{const j=await fetch(`/api/jobs/${jobId}`).then(r=>r.json());$('status').textContent=j.status;$('status').className=`status ${j.status}`;$('logs').textContent=(j.logs||[]).join('\n');$('logs').scrollTop=$('logs').scrollHeight;if(['queued','running'].includes(j.status)){poller=setTimeout(poll,1000)}else{$('start').disabled=false;$('cancel').classList.add('hidden');if(j.has_result){$('download').classList.remove('hidden');await loadResult()}}}catch(e){poller=setTimeout(poll,2000)}}
+$('cancel').onclick=async()=>{if(jobId){await fetch(`/api/jobs/${jobId}/cancel`,{method:'POST'});poll()}};$('download').onclick=()=>{if(jobId)location.href=`/api/jobs/${jobId}/download`};
+async function loadResult(){const data=await fetch(`/api/jobs/${jobId}/result`).then(r=>r.json());const s=data.summary||{};$('successCount').textContent=s.count??0;$('failedCount').textContent=s.failed??0;$('meanScore').textContent=s.mean_weighted_total??'–';$('criteria').innerHTML=Object.entries(s.mean_by_criterion||{}).map(([k,v])=>`<div class="criterion"><span>${esc(k)}</span><strong>${v}</strong></div>`).join('');$('summary').classList.remove('hidden');
+ resultRows=data.results||[];if(!resultRows.length)return;const keys=Object.keys(resultRows[0].scores||{});$('resultHead').innerHTML=['PPT','页数',...keys,'总分'].map(x=>`<th>${esc(x)}</th>`).join('');$('resultBody').innerHTML=resultRows.map((r,i)=>`<tr data-i="${i}"><td>${esc(r.ppt_id)}</td><td>${r.num_slides}</td>${keys.map(k=>`<td>${r.scores[k]??'–'}</td>`).join('')}<td><strong>${r.weighted_total}</strong></td></tr>`).join('');document.querySelectorAll('#resultBody tr').forEach(tr=>tr.onclick=()=>showDeck(resultRows[+tr.dataset.i]));$('resultsCard').classList.remove('hidden')}
+function showDeck(r){const explanations=r.score_explanations||{},reasons=r.reasons||{};let html=`<h2>${esc(r.ppt_id)} · 评分解释</h2>`;for(const [criterion,subs] of Object.entries(explanations)){html+=`<div class="reason"><b>${esc(criterion)} — ${r.scores?.[criterion]??'–'}</b><div>${esc(reasons[criterion]||'')}</div>`;for(const [sub,why] of Object.entries(subs||{}))html+=`<p><strong>${esc(sub)} ${r.sub_scores?.[criterion]?.[sub]??'–'}：</strong>${esc(why)}</p>`;html+='</div>'}const slides=r.per_slide_scores||[];if(slides.length){html+='<h2>逐页评分</h2><div class="slide-grid">';for(const s of slides){html+=`<div class="slide-card"><h4>Slide ${s.slide_number}</h4>`;for(const [criterion,score] of Object.entries(s.scores||{})){html+=`<b>${esc(criterion)}：${score}</b>`;for(const [sub,why] of Object.entries(s.score_explanations?.[criterion]||{}))html+=`<p>${esc(sub)} ${s.sub_scores?.[criterion]?.[sub]??'–'}：${esc(why)}</p>`}html+='</div>'}html+='</div>'}$('deckDetail').innerHTML=html;$('deckDetail').classList.remove('hidden');$('deckDetail').scrollIntoView({behavior:'smooth',block:'start'})}
+init().catch(e=>$('formError').textContent=e.message);
+</script>
+</body></html>

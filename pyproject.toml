@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ppt-eval-1"
+version = "0.2.0"
+description = "Maintainable VLM-based subjective PowerPoint evaluator"
+requires-python = ">=3.10"
+dependencies = ["openai>=1.30.0", "PyMuPDF>=1.24.0", "Pillow>=10.0.0", "python-dotenv>=1.0.0", "fastapi>=0.115.0", "uvicorn>=0.30.0", "python-multipart>=0.0.9"]
+
+[project.scripts]
+ppt-eval-1 = "pujiang_ppt_eval.cli:main"
+ppt-eval-web = "pujiang_ppt_eval.web:main"
+
+[tool.setuptools.package-data]
+pujiang_ppt_eval = ["rubrics/*.json"]

@@ -1,0 +1,55 @@
+{
+  "name": "my-ppt-eval-plus-single-slide-v1",
+  "version": 1,
+  "score_scale": {"min": 0, "max": 10, "integer": true},
+  "criteria": [
+    {
+      "name": "Content", "input_mode": "extracted_text", "weight": 0.30,
+      "description": "Evaluate presentation content quality.",
+      "subcriteria": [
+        {"name": "Accuracy_and_Completeness", "weight": 0.40, "description": "Apparent correctness, internal consistency, adequate coverage and necessary context without claiming source-grounded verification."},
+        {"name": "Logical_Flow", "weight": 0.30, "description": "Coherent ordering, narrative progression and transitions."},
+        {"name": "Cognitive_Rhythm", "weight": 0.30, "description": "Variation between dense information and lighter recovery or summary slides."}
+      ]
+    },
+    {
+      "name": "Visual_Design", "input_mode": "slide_images", "weight": 0.30,
+      "description": "Evaluate deck-level aesthetic quality, consistency, and professional appearance.",
+      "subcriteria": [
+        {"name": "Color_Scheme", "weight": 0.20, "description": "Harmony, contrast, palette balance, and unified color application."},
+        {"name": "Typography", "weight": 0.20, "description": "Font readability, consistency, sizing, and hierarchy."},
+        {"name": "Visual_Consistency", "weight": 0.20, "description": "Cross-slide consistency of color, motifs, style, and identity."},
+        {"name": "Image_Quality", "weight": 0.20, "description": "Resolution, relevance, cropping, distortion, and integration."},
+        {"name": "Theme_Appropriateness", "weight": 0.20, "description": "How well the visual theme matches topic and audience."}
+      ]
+    },
+    {
+      "name": "Layout", "input_mode": "slide_images", "weight": 0.20,
+      "description": "Evaluate deck-level spatial organization, balance, alignment, and readability.",
+      "subcriteria": [
+        {"name": "Spatial_Balance", "weight": 0.30, "description": "Whitespace, density, balance, and visual weight."},
+        {"name": "Element_Alignment", "weight": 0.30, "description": "Alignment, spacing, grids, margins, and precision."},
+        {"name": "No_Overlapping", "weight": 0.40, "description": "Absence of unintended collisions, clipping, occlusion, and overflow."}
+      ]
+    },
+    {
+      "name": "Complexity", "input_mode": "slide_images", "weight": 0.20,
+      "description": "Evaluate deck-level visual richness and sophistication without rewarding clutter.",
+      "subcriteria": [
+        {"name": "Charts_and_Data", "weight": 0.25, "description": "Quality of charts, tables, diagrams, and data communication."},
+        {"name": "Visual_Elements", "weight": 0.25, "description": "Variety and integration of images, icons, illustrations, and graphics."},
+        {"name": "Advanced_Design", "weight": 0.25, "description": "Depth, layering, custom graphics, effects, and sophisticated techniques."},
+        {"name": "Layout_Variety", "weight": 0.25, "description": "Meaningful layout variation while retaining consistency."}
+      ]
+    },
+    {
+      "name": "Single_Slide_Quality", "input_mode": "single_slide", "weight": 0.20,
+      "description": "Evaluate the standalone execution quality of each individual slide.",
+      "subcriteria": [
+        {"name": "Content_Clarity", "weight": 0.35, "description": "Whether this slide communicates one understandable message with readable and appropriately concise content."},
+        {"name": "Visual_Effectiveness", "weight": 0.35, "description": "Whether visible colors, typography, imagery, and hierarchy support this slide's message."},
+        {"name": "Layout_Execution", "weight": 0.30, "description": "Whether this slide is balanced, aligned, unclipped, non-overlapping, and spatially coherent."}
+      ]
+    }
+  ]
+}
